@@ -1,8 +1,10 @@
 import React from 'react';
-import logo from '../../assets/images/unacademy-logo.svg';
+import logo from '../../../../assets/images/unacademy-logo.svg';
 
-import './Newtab.css';
-import './Newtab.scss';
+/**
+ * import stylesheets, supports direct import of .scss files as well
+ */
+import './styles.css';
 
 const NewTabContainer = () => {
   return (
