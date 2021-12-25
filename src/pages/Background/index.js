@@ -1,2 +1,8 @@
-console.log('This is the background page.');
-console.log('Put the background scripts here.');
+/**
+ * @author YashKumarVerma
+ * 
+ * This script powers the service worker. 
+ * 
+ * to debug, goto Extension > Extension Details > Inspect Views  > Service Worker
+ */
+console.log(`[service-worker] loaded`)
