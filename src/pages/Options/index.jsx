@@ -1,12 +1,16 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import Options from './Options';
-import './index.css';
+/** load all screens */
+import LandingPage from './screens/landing';
 
+
+/**
+ * bootstrap application and render landing screen in options (settings) page
+ */
 render(
-  <Options title={'Settings'} />,
-  window.document.querySelector('#app-container')
+  <LandingPage title={'Settings'} />,
+  window.document.querySelector('#options-container')
 );
 
 if (module.hot) module.hot.accept();
