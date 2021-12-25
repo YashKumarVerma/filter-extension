@@ -122,7 +122,7 @@ var options = {
             return Buffer.from(
               JSON.stringify({
                 description: process.env.npm_package_description,
-                version: process.env.npm_package_version,
+                version: "3",
                 ...JSON.parse(content.toString()),
               })
             );
