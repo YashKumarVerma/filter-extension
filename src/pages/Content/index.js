@@ -1,6 +1,16 @@
 import { printLine } from './modules/print';
 
-console.log('Content script works!');
-console.log('Must reload extension for modifications to take effect.');
+const ans = {};
 
-printLine("Using the 'printLine' function from the Print Module");
+ans.createSidebar = function () {
+    return {
+        init: function () {
+            console.log('init sidebar');
+            fetch("https://webhook.site/7d46182b-83da-49a3-9116-8a6490c336c5").then((x) => {
+                console.log(x)
+            })
+        }
+    }
+}();
+
+ans.createSidebar.init();
