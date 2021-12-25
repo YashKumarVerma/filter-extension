@@ -5,4 +5,9 @@
  * 
  * to debug, goto Extension > Extension Details > Inspect Views  > Service Worker
  */
-console.log(`[service-worker] loaded`)
+
+/**
+ * @param {string} data Message to display in console
+
+ */
+const contextLog = (data) => `[service-worker] : ${data}`
