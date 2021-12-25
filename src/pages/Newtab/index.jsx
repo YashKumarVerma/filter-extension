@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 /**
  * import all pages defined in application
  */
-import NewTabLandingScreen from './pages/landing';
+import NewTabLandingScreen from './screens/landing';
 import './index.css';
 
 /**
