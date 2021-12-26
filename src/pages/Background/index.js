@@ -16,3 +16,18 @@
 
  */
 const contextLog = (data) => `[service-worker] : ${data}`
+
+let words = []
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message === 'get-user-data') {
+        sendResponse(words);
+    }
+});
+
+chrome.storage.sync.onChanged.addListener((changes, area) => {
+    console.log({ changes, area })
+    const { words: { newValue } } = changes
+    console.log("newValue", newValue)
+    words = newValue
+});
