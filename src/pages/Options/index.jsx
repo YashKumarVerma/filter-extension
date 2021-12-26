@@ -9,8 +9,8 @@ import LandingPage from './screens/landing';
  * bootstrap application and render landing screen in options (settings) page
  */
 render(
-  <LandingPage title={'Settings'} />,
-  window.document.querySelector('#options-container')
+  <LandingPage title={'Unacademy Secure Web'} />,
+  window.document.querySelector('#app')
 );
 
 if (module.hot) module.hot.accept();
