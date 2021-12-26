@@ -17,6 +17,9 @@
  */
 const contextLog = (data) => `[service-worker] : ${data}`
 
+/**
+ * trigger the default content script to run
+ */
 chrome.browserAction.onClicked.addListener(function () {
     chrome.scripting.executeScript({ file: "content.bundle.js" }, function (result) {
         contextLog(`running content.bundle.js`)
