@@ -3,6 +3,9 @@ import { content } from "../../content"
 
 interface Props { }
 
+/**
+ * trace stores the instances when the event was fired
+ */
 interface Trace {
     url: string;
     baseSite: string
@@ -14,7 +17,7 @@ interface StoredWord {
     title: string;
     status: boolean;
     count: number,
-    trace: Array<Trace>
+    trace?: Array<Trace>
 }
 
 /**
@@ -73,6 +76,19 @@ const ContentTable: React.FC<Props> = () => {
         setWords(newWords)
     }
 
+    const switchListener = (id: number, value: any) => {
+        const checked = value === 'on' ? true : false;
+        console.log({ id, value, checked })
+        let newWords = words.map((word: StoredWord) => {
+            if (word.id === id) {
+                word.status = !checked
+            }
+            return word
+        })
+        setWords(newWords)
+    }
+
+
     return <div className='container' >
         <table role="grid" >
             <thead >
@@ -87,7 +103,13 @@ const ContentTable: React.FC<Props> = () => {
                 {words.map((word: StoredWord, index: number) => {
                     return <tr key={index}>
                         <td>{word.title}</td>
-                        <td>{word.status}</td>
+                        <td>
+                            <fieldset>
+                                <label htmlFor="switch">
+                                    <input type="checkbox" id="switch" name="switch" role="switch" defaultChecked={word.status} onChange={(e) => { switchListener(word.id, e.target.value) }} />
+                                </label>
+                            </fieldset>
+                        </td>
                         <td>{word.count}</td>
                         <td>
                             <a style={{ cursor: "pointer", color: "#D2686E" }} onClick={() => { removeWord(word.id) }}>Delete</a>
