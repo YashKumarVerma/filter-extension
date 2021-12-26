@@ -118,19 +118,18 @@ const ContentTable: React.FC<Props> = () => {
                 })}
                 <tr>
                     <td>Insert New Word</td>
-                    <td>
+                    <td colSpan={words.length == 0 ? 1 : 2}>
                         <input type="text" placeholder="Enter new word" value={newWord} onChange={(e) => { setNewWord(e.target.value); }} onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                                addNewWord()
-                            }
+                            if (e.key === 'Enter') { addNewWord() }
                         }} />
                     </td>
+
                     <td>
                         <button type="button" className="contrast outline" onClick={() => { addNewWord() }}>Add</button>
                     </td>
                 </tr>
             </tbody>
-        </table>
+        </table >
 
 
     </div >
