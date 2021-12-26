@@ -3,6 +3,7 @@ import './styles.css';
 
 /** importing components used in screen */
 import Header from "../../components/header"
+import WordTable from "../../components/table"
 
 interface Props { }
 
@@ -15,7 +16,10 @@ interface Props { }
  * @returns {JSX.Element}
  */
 const OptionsPageLandingScreen: React.FC<Props> = () => {
-  return <div><Header /></div>;
+  return <div>
+    <Header />
+    <WordTable />
+  </div>;
 };
 
 export default OptionsPageLandingScreen;
