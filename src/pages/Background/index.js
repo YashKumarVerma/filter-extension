@@ -17,11 +17,17 @@
  */
 const contextLog = (data) => `[service-worker] : ${data}`
 
-/**
- * trigger the default content script to run
- */
-chrome.browserAction.onClicked.addListener(function () {
-    chrome.scripting.executeScript({ file: "content.bundle.js" }, function (result) {
-        contextLog(`running content.bundle.js`)
-    })
+let words = []
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message === 'get-user-data') {
+        sendResponse(words);
+    }
+});
+
+chrome.storage.sync.onChanged.addListener((changes, area) => {
+    console.log({ changes, area })
+    const { words: { newValue } } = changes
+    console.log("newValue", newValue)
+    words = newValue
 });

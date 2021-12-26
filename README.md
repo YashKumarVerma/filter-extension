@@ -9,3 +9,5 @@
 
 ## Reference 
 - The chrome extension boilerplate is cloned from [here](https://github.com/lxieyang/chrome-extension-boilerplate-react) to quickly setup all build tools and integrate react with typescript.
+- Options page in extension : https://developer.chrome.com/docs/extensions/mv3/options/
+- CSS framework : https://basscss.com/#getting-started

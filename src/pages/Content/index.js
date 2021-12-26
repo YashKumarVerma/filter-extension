@@ -1,11 +1,13 @@
 const { maskBannedWordInString } = require("./util/string")
 
+
+
 /**
  * This function tests a given word against a list of words which are not allowed to be displayed, 
  * and replaces them with an element which does not have that word.
  */
-function maskAllWordsOnPage() {
-    const keys = ["code", "teacher"]
+function maskAllWordsOnPage(keys) {
+    // const keys = ["code", "teacher"]
 
     // get all elements of the page
     const elements = document.getElementsByTagName('*');
@@ -33,5 +35,20 @@ function maskAllWordsOnPage() {
     }
 }
 
-/** run it :) */
-maskAllWordsOnPage()
+
+window.addEventListener('load', () => {
+    console.log('[content-script] : window.onload');
+
+    chrome.runtime.sendMessage('get-user-data', (response) => {
+        console.log('data received by content script : ', response);
+        console.log('[content-script] : response : ', response);
+
+        // only those words which have status = true
+        const wordlist = response.filter(item => item.status === true).map(item => item.title);
+        console.log('[content-script] : wordlist : ', wordlist);
+
+        /** run it :) */
+        // maskAllWordsOnPage(["code", "teacher"])
+        maskAllWordsOnPage(wordlist)
+    });
+})
