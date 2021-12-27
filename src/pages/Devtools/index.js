@@ -6,7 +6,7 @@
  * after webpack build, the file name of ./index.html changes to ./panel.html, hence the path
  */
 chrome.devtools.panels.create(
-  'Unacademy Secure Web',
+  'Secure Web',
   'icon-34.png',
   'panel.html'
 );

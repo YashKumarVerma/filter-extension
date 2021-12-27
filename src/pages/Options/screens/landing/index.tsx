@@ -4,6 +4,7 @@ import './styles.css';
 /** importing components used in screen */
 import Header from "../../components/header"
 import WordTable from "../../components/table"
+import TraceTable from "../../components/trace"
 
 interface Props { }
 
@@ -19,6 +20,7 @@ const OptionsPageLandingScreen: React.FC<Props> = () => {
   return <div>
     <Header />
     <WordTable />
+    <TraceTable />
   </div>;
 };
 

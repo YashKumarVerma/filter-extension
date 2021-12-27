@@ -3,10 +3,14 @@
  */
 
 const app = {
-    title: "Unacademy Secure Web",
+    title: "Secure Web",
     subtitle: "let's crack the web",
 }
 
-const content = { app }
+const trace = {
+
+}
+
+const content = { app, trace }
 
 export { content }

@@ -1,41 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { content } from "../../content"
+import { StoredWord } from "../../interfaces/storedWord"
 
 interface Props { }
 
-/**
- * trace stores the instances when the event was fired
- * 
- * the reason that traces are kept separate from StoredWords are
- * - traces will grow very quickly as the user adds words and browses the web
- * - once traces become bulky, it would slow down normal text lookup and search
- * - there is no need of traces in normal extension working, so no need to keep in primary storage media
- * - traces are sent to telemetry endpoint and can be used to analyze the usage of extension
- * - traces can be cleared as needed by user.
- */
-interface Trace {
-    id: number,
-    word: string,
-    url: string;
-    extra: any
-}
-
-/**
- * StoredWord is the primary data index of the extension
- * 
- * - single source of truth for all the words and extension logic
- * - id acts as primary key, implemented on application layer
- * - title is the actual word string that is being stored
- * - status allows quick toggle of the word's status
- * - count : an "approximate" of number of times a word was encountered by user.
- * - count increments w.r.t traces but persist when traces are cleared.
- */
-interface StoredWord {
-    id: number;
-    title: string;
-    status: boolean;
-    count: number,
-}
 
 /**
  * Table to display a dynamic list of words which are blocked by the extension.
@@ -66,16 +34,16 @@ const ContentTable: React.FC<Props> = () => {
             console.error("[chrome-storage] :: words ", e)
         }
 
-        // get latest id counter
-        try {
-            chrome.storage.sync.get("wordIdCounter", function (storedObject: any) {
-                console.log("[chrome-storage] :: wordIdCounter ", storedObject)
-                const { idCounter } = storedObject
-                setIdCounter(idCounter)
-            })
-        } catch (e) {
-            console.error("[chrome-storage] :: wordIdCounter", e)
-        }
+        // // get latest id counter
+        // try {
+        //     chrome.storage.sync.get("wordIdCounter", function (storedObject: any) {
+        //         console.log("[chrome-storage] :: wordIdCounter ", storedObject)
+        //         const { idCounter } = storedObject
+        //         setIdCounter(idCounter)
+        //     })
+        // } catch (e) {
+        //     console.error("[chrome-storage] :: wordIdCounter", e)
+        // }
     }, [])
 
     /** to run when words change */
@@ -102,7 +70,7 @@ const ContentTable: React.FC<Props> = () => {
 
         // add new word to storage
         let newWordToBeInserted: StoredWord = {
-            id: words.length + 1,
+            id: idCounter + 1,
             title: newWord,
             status: true,
             count: 0
@@ -111,6 +79,7 @@ const ContentTable: React.FC<Props> = () => {
 
         // clear input field
         setNewWord("")
+        setIdCounter(idCounter + 1)
     }
 
     const removeWord = (id: number) => {
@@ -137,7 +106,7 @@ const ContentTable: React.FC<Props> = () => {
                 <tr >
                     <th scope="col">Word</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Count</th>
+                    {/* <th scope="col">Count</th> */}
                     {words.length ? <td>Actions</td> : null}
                 </tr>
             </thead>
@@ -152,7 +121,7 @@ const ContentTable: React.FC<Props> = () => {
                                 </label>
                             </fieldset>
                         </td>
-                        <td>{word.count}</td>
+                        {/* <td>{word.count}</td> */}
                         <td>
                             <a style={{ cursor: "pointer", color: "#D2686E" }} onClick={() => { removeWord(word.id) }}>Delete</a>
                         </td>
@@ -160,7 +129,7 @@ const ContentTable: React.FC<Props> = () => {
                 })}
                 <tr>
                     <td>Insert New Word</td>
-                    <td colSpan={words.length == 0 ? 1 : 2}>
+                    <td >
                         <input type="text" placeholder="Enter new word" value={newWord} onChange={(e) => { setNewWord(e.target.value); }} onKeyDown={(e) => {
                             if (e.key === 'Enter') { addNewWord() }
                         }} />
