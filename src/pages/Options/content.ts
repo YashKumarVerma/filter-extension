@@ -7,6 +7,10 @@ const app = {
     subtitle: "let's crack the web",
 }
 
-const content = { app }
+const trace = {
+
+}
+
+const content = { app, trace }
 
 export { content }
