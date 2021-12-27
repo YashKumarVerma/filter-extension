@@ -8,9 +8,10 @@
 5. The extension should be loaded with hot-reload enabled.
 
 ## Notes
+- latest version of manifest implemented (v3)
 - word lists are synchronized across browsers if user is logged - implemented using synchronized storages.
 - traces are kept on local storages due to size and write limit restrictions on sync storage.
-- batch processing implemented to communicate from service-worker and chrome storage.
+- batch processing implemented to reduce network requests b/w service-worker and content scripts.
 
 
 ## Reference 
