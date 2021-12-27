@@ -70,7 +70,7 @@ const ContentTable: React.FC<Props> = () => {
 
         // add new word to storage
         let newWordToBeInserted: StoredWord = {
-            id: words.length + 1,
+            id: idCounter + 1,
             title: newWord,
             status: true,
             count: 0
@@ -105,7 +105,7 @@ const ContentTable: React.FC<Props> = () => {
                 <tr >
                     <th scope="col">Word</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Count</th>
+                    {/* <th scope="col">Count</th> */}
                     {words.length ? <td>Actions</td> : null}
                 </tr>
             </thead>
@@ -120,7 +120,7 @@ const ContentTable: React.FC<Props> = () => {
                                 </label>
                             </fieldset>
                         </td>
-                        <td>{word.count}</td>
+                        {/* <td>{word.count}</td> */}
                         <td>
                             <a style={{ cursor: "pointer", color: "#D2686E" }} onClick={() => { removeWord(word.id) }}>Delete</a>
                         </td>
