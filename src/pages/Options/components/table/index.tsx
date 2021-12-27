@@ -34,16 +34,16 @@ const ContentTable: React.FC<Props> = () => {
             console.error("[chrome-storage] :: words ", e)
         }
 
-        // get latest id counter
-        try {
-            chrome.storage.sync.get("wordIdCounter", function (storedObject: any) {
-                console.log("[chrome-storage] :: wordIdCounter ", storedObject)
-                const { idCounter } = storedObject
-                setIdCounter(idCounter)
-            })
-        } catch (e) {
-            console.error("[chrome-storage] :: wordIdCounter", e)
-        }
+        // // get latest id counter
+        // try {
+        //     chrome.storage.sync.get("wordIdCounter", function (storedObject: any) {
+        //         console.log("[chrome-storage] :: wordIdCounter ", storedObject)
+        //         const { idCounter } = storedObject
+        //         setIdCounter(idCounter)
+        //     })
+        // } catch (e) {
+        //     console.error("[chrome-storage] :: wordIdCounter", e)
+        // }
     }, [])
 
     /** to run when words change */
@@ -79,6 +79,7 @@ const ContentTable: React.FC<Props> = () => {
 
         // clear input field
         setNewWord("")
+        setIdCounter(idCounter + 1)
     }
 
     const removeWord = (id: number) => {
