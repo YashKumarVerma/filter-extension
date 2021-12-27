@@ -128,7 +128,7 @@ const ContentTable: React.FC<Props> = () => {
                 })}
                 <tr>
                     <td>Insert New Word</td>
-                    <td colSpan={words.length == 0 ? 1 : 2}>
+                    <td >
                         <input type="text" placeholder="Enter new word" value={newWord} onChange={(e) => { setNewWord(e.target.value); }} onKeyDown={(e) => {
                             if (e.key === 'Enter') { addNewWord() }
                         }} />
