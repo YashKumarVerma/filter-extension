@@ -16,6 +16,10 @@
 
 ![after](https://i.imgur.com/HKWjNVV.png)
 
+**Traces**
+![https://i.imgur.com/hppljyx.png](https://i.imgur.com/hppljyx.png)
+![https://i.imgur.com/JcncB1Y.png](https://i.imgur.com/JcncB1Y.png)
+
 ## Development
 1. Clone the repository
 2. Run `npm install` or `yarn`
