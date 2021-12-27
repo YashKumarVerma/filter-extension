@@ -1,5 +1,0 @@
-const CONFIG = {
-
-}
-
-export { CONFIG }

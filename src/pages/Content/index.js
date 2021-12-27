@@ -1,13 +1,33 @@
-const { maskBannedWordInString } = require("./util/string")
+const { maskBannedWordInString, encounterCounter } = require("./util/string")
+const { cachedChromeAPI } = require("./util/batch")
 
 
+/** 
+ * collection of events to be managed by application 
+ */
+const events = {
+    /**
+     * @param {{[string]:number}} word Key value pairs of frequencies
+     */
+    encounter: (word) => {
+        /** using a intermediate middleware to process requests in batch */
+        console.log(`[service-worker]::encounter`, word)
+        cachedChromeAPI.runtime.sendMessage({
+            slug: "encounter",
+            payload: {
+                url: window.location.href,
+                word
+            }
+        })
+    }
+}
 
 /**
  * This function tests a given word against a list of words which are not allowed to be displayed, 
  * and replaces them with an element which does not have that word.
  */
-function maskAllWordsOnPage(keys) {
-    // const keys = ["code", "teacher"]
+function maskAllWordsOnPage(activeBannedWordList) {
+    const keys = activeBannedWordList.map(item => item.title);
 
     // get all elements of the page
     const elements = document.getElementsByTagName('*');
@@ -26,7 +46,8 @@ function maskAllWordsOnPage(keys) {
              */
             if (currentProcessingNode.nodeType === 3) {
                 const textContentOfString = currentProcessingNode.nodeValue;
-                var maskedContentOfString = maskBannedWordInString(textContentOfString, keys)
+                events.encounter(encounterCounter(textContentOfString, activeBannedWordList))
+                const maskedContentOfString = maskBannedWordInString(textContentOfString, keys)
                 if (maskedContentOfString !== textContentOfString) {
                     element.replaceChild(document.createTextNode(maskedContentOfString), currentProcessingNode);
                 }
@@ -35,20 +56,33 @@ function maskAllWordsOnPage(keys) {
     }
 }
 
-
+/** wait for page load to get data to replace */
 window.addEventListener('load', () => {
-    console.log('[content-script] : window.onload');
+    console.log('[content-script] : triggering window load operations');
 
-    chrome.runtime.sendMessage('get-user-data', (response) => {
-        console.log('data received by content script : ', response);
-        console.log('[content-script] : response : ', response);
+    /** send message to service-worker to fetch latest wordlist */
+    chrome.runtime.sendMessage({ slug: 'get-user-data' }, (response) => {
+        console.log('[service-worker] => [content-script] ; ', response);
 
         // only those words which have status = true
-        const wordlist = response.filter(item => item.status === true).map(item => item.title);
-        console.log('[content-script] : wordlist : ', wordlist);
+        const wordList = response.filter(item => item.status === true)
+        console.log('[content-script] : wordList : ', wordList);
 
-        /** run it :) */
-        // maskAllWordsOnPage(["code", "teacher"])
-        maskAllWordsOnPage(wordlist)
+        maskAllWordsOnPage(wordList)
     });
 })
+
+
+/**
+ * heartbeat to poll the service-worker alive and offload processing from service-worker.
+ * 
+ * - required as service-worker is not infinitely persistent. 
+ */
+let clockCycle = 0
+setInterval(() => {
+    cachedChromeAPI.process.batchTasks()
+
+    // housekeeping :)
+    console.log(`[service-worker] : clock cycle ${clockCycle}`)
+    clockCycle++
+}, 5000)

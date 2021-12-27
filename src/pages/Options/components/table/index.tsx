@@ -5,19 +5,36 @@ interface Props { }
 
 /**
  * trace stores the instances when the event was fired
+ * 
+ * the reason that traces are kept separate from StoredWords are
+ * - traces will grow very quickly as the user adds words and browses the web
+ * - once traces become bulky, it would slow down normal text lookup and search
+ * - there is no need of traces in normal extension working, so no need to keep in primary storage media
+ * - traces are sent to telemetry endpoint and can be used to analyze the usage of extension
+ * - traces can be cleared as needed by user.
  */
 interface Trace {
+    id: number,
+    word: string,
     url: string;
-    baseSite: string
     extra: any
 }
 
+/**
+ * StoredWord is the primary data index of the extension
+ * 
+ * - single source of truth for all the words and extension logic
+ * - id acts as primary key, implemented on application layer
+ * - title is the actual word string that is being stored
+ * - status allows quick toggle of the word's status
+ * - count : an "approximate" of number of times a word was encountered by user.
+ * - count increments w.r.t traces but persist when traces are cleared.
+ */
 interface StoredWord {
     id: number;
     title: string;
     status: boolean;
     count: number,
-    trace?: Array<Trace>
 }
 
 /**
@@ -29,26 +46,52 @@ const ContentTable: React.FC<Props> = () => {
 
     const [words, setWords] = useState<StoredWord[]>([]);
     const [isWordListLoading, setWordListLoading] = useState<boolean>(true);
+    const [idCounter, setIdCounter] = useState<number>(0);
 
     /** state holder for insert new element  */
     const [newWord, setNewWord] = useState<string>("");
 
+
+    /** to run at page load */
     useEffect(() => {
-        chrome.storage.sync.get('words', function (storedObject: any) {
-            console.log("words loaded from chrome.storage", storedObject)
-            const { words } = storedObject
-            setWords(words)
-            setWordListLoading(false)
-        });
+        // get latest list of words from service worker
+        try {
+            chrome.storage.sync.get('words', function (storedObject: any) {
+                console.log("[chrome-storage] :: words ", storedObject)
+                const { words } = storedObject
+                setWords(words)
+                setWordListLoading(false)
+            });
+        } catch (e) {
+            console.error("[chrome-storage] :: words ", e)
+        }
+
+        // get latest id counter
+        try {
+            chrome.storage.sync.get("wordIdCounter", function (storedObject: any) {
+                console.log("[chrome-storage] :: wordIdCounter ", storedObject)
+                const { idCounter } = storedObject
+                setIdCounter(idCounter)
+            })
+        } catch (e) {
+            console.error("[chrome-storage] :: wordIdCounter", e)
+        }
     }, [])
 
+    /** to run when words change */
     useEffect(() => {
-        chrome.storage.sync.set({ words }, function () {
-            console.log("words written to chrome.storage", words)
-        });
+        try {
+            chrome.storage.sync.set({ words }, function () {
+                console.log("words written to chrome.storage", words)
+            });
+        } catch (e) {
+            console.error("[chrome-storage] :: words/update", e)
+        }
     }, [words])
 
-    /** mechanism to add or remove words system */
+    /**
+     * mechanism to add or remove words system 
+     */
     const addNewWord = () => {
 
         // check for empty submission 
@@ -62,8 +105,7 @@ const ContentTable: React.FC<Props> = () => {
             id: words.length + 1,
             title: newWord,
             status: true,
-            count: 0,
-            trace: []
+            count: 0
         }
         setWords([...words, newWordToBeInserted])
 
