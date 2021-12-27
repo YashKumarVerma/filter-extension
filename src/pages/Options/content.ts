@@ -3,7 +3,7 @@
  */
 
 const app = {
-    title: "Unacademy Secure Web",
+    title: "Secure Web",
     subtitle: "let's crack the web",
 }
 

@@ -9,7 +9,7 @@ import LandingPage from './screens/landing';
  * bootstrap application and render landing screen in options (settings) page
  */
 render(
-  <LandingPage title={'Unacademy Secure Web'} />,
+  <LandingPage title={'Secure Web'} />,
   window.document.querySelector('#app')
 );
 
