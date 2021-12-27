@@ -9,8 +9,7 @@
  * - traces can be cleared as needed by user.
  */
 export interface Trace {
-    id: number,
     word: string,
-    url: string;
-    extra: any
+    count: number,
+    urls: string[],
 }
