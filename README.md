@@ -3,6 +3,9 @@
 ## Screenshots
 ![New Tab](https://i.imgur.com/Syl2kh7.png)
 
+> Counter to see works blocked
+> ![https://i.imgur.com/QQIxshX.png](https://i.imgur.com/QQIxshX.png)
+
 > easily add new words
 > ![Adding and removing words](https://i.imgur.com/18b6gvA.png)
 
@@ -35,7 +38,11 @@
 - word lists are synchronized across browsers if user is logged - implemented using synchronized storages.
 - traces are kept on local storages due to size and write limit restrictions on sync storage.
 - batch processing implemented to reduce network requests b/w service-worker and content scripts.
-- under development, list of known issues are visible on the issue tracker.
+
+## Todo
+- add support to show tab-wise data in popup
+- option to toggle foul-word masking on and off from popup at runtime.
+
 
 ## Reference 
 - The chrome extension boilerplate is cloned from [here](https://github.com/lxieyang/chrome-extension-boilerplate-react) to quickly setup all build tools and integrate react with typescript.

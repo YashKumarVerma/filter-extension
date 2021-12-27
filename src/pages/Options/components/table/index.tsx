@@ -23,27 +23,12 @@ const ContentTable: React.FC<Props> = () => {
     /** to run at page load */
     useEffect(() => {
         // get latest list of words from service worker
-        try {
-            chrome.storage.sync.get('words', function (storedObject: any) {
-                console.log("[chrome-storage] :: words ", storedObject)
-                const { words } = storedObject
-                setWords(words)
-                setWordListLoading(false)
-            });
-        } catch (e) {
-            console.error("[chrome-storage] :: words ", e)
-        }
-
-        // // get latest id counter
-        // try {
-        //     chrome.storage.sync.get("wordIdCounter", function (storedObject: any) {
-        //         console.log("[chrome-storage] :: wordIdCounter ", storedObject)
-        //         const { idCounter } = storedObject
-        //         setIdCounter(idCounter)
-        //     })
-        // } catch (e) {
-        //     console.error("[chrome-storage] :: wordIdCounter", e)
-        // }
+        chrome.storage.sync.get('words', function (storedObject: any) {
+            console.log("[chrome-storage] :: words ", storedObject)
+            const { words } = storedObject
+            setWords(words || [])
+            setWordListLoading(false)
+        });
     }, [])
 
     /** to run when words change */
@@ -63,7 +48,7 @@ const ContentTable: React.FC<Props> = () => {
     const addNewWord = () => {
 
         // check for empty submission 
-        if (newWord.length === 0) {
+        if (!newWord || newWord.length === 0) {
             alert("Please enter a word to add to the list.")
             return;
         }
@@ -107,7 +92,7 @@ const ContentTable: React.FC<Props> = () => {
                     <th scope="col">Word</th>
                     <th scope="col">Status</th>
                     {/* <th scope="col">Count</th> */}
-                    {words.length ? <td>Actions</td> : null}
+                    {words.length !== 0 ? <td>Actions</td> : null}
                 </tr>
             </thead>
             <tbody aria-busy={isWordListLoading} >

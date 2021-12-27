@@ -79,7 +79,7 @@ window.addEventListener('load', () => {
  * - required as service-worker is not infinitely persistent. 
  */
 let clockCycle = 0
-setInterval(() => {
+setTimeout(() => {
     cachedChromeAPI.process.batchTasks()
 
     // housekeeping :)
